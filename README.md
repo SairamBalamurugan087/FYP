@@ -8,7 +8,16 @@ This project integrates **Blockchain** and **Software Defined Networking (SDN)**
 ## Project Structure
 The project structure is organized as follows:
 
-decentralized-network/ ├── src/ # Source code for the project │ ├── contracts/ # Smart contract files for blockchain integration │ ├── controller/ # Code for the SDN controller integration with OpenDaylight │ ├── network/ # Scripts for network topology and simulation (Mininet) │ └── dashboard/ # Web dashboard for monitoring and control │ └── templates/ # Template files for the dashboard UI ├── scripts/ # Utility scripts for the setup and automation ├── tests/ # Unit tests for validating the functionality of components └── config/ # Configuration files for the project setup (e.g., .env)
+decentralized-network/ 
+├── src/ # Source code for the project 
+│ ├── contracts/ # Smart contract files for blockchain integration 
+│ ├── controller/ # Code for the SDN controller integration with OpenDaylight 
+│ ├── network/ # Scripts for network topology and simulation (Mininet) 
+│ └── dashboard/ # Web dashboard for monitoring and control 
+│ └── templates/ # Template files for the dashboard UI 
+├── scripts/ # Utility scripts for the setup and automation 
+├── tests/ # Unit tests for validating the functionality of components 
+└── config/ # Configuration files for the project setup (e.g., .env)
 
 ### Folder Descriptions:
 
@@ -24,9 +33,3 @@ decentralized-network/ ├── src/ # Source code for the project │ ├─�
 - **`tests/`**: Contains unit tests for verifying the correctness and functionality of the project.
 
 - **`config/`**: Configuration files for the system, such as the **`.env`** file that contains environment variables like OpenDaylight credentials and Web3 provider URL.
-
-Each of these directories plays a specific role in the decentralized network management setup, from smart contract deployment and SDN control to network simulation and visualization via the web dashboard.
-
----
-
-This project structure ensures a clean separation of concerns, making the codebase more modular and easier to maintain or extend.
