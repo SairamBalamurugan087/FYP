@@ -1,0 +1,127 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Management Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h1 class="text-2xl font-bold mb-4">Network Management Dashboard</h1>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="p-4 bg-blue-100 rounded">
+                    <h3 class="font-semibold">Total Switches</h3>
+                    <p id="total-switches">Loading...</p>
+                </div>
+                <div class="p-4 bg-green-100 rounded">
+                    <h3 class="font-semibold">Active Links</h3>
+                    <p id="active-links">Loading...</p>
+                </div>
+                <div class="p-4 bg-yellow-100 rounded">
+                    <h3 class="font-semibold">Current Alerts</h3>
+                    <p id="alert-count">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Topology Visualization -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Network Topology</h2>
+            <div class="relative" style="height: 600px;">
+                <div id="topology-viz"></div>
+            </div>
+        </div>
+
+        <!-- Layer Statistics -->
+        <div class="grid grid-cols-3 gap-6 mb-6">
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-bold mb-4">Core Layer</h3>
+                <div id="core-stats"></div>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-bold mb-4">Distribution Layer</h3>
+                <div id="distribution-stats"></div>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-bold mb-4">Access Layer</h3>
+                <div id="access-stats"></div>
+            </div>
+        </div>
+
+        <!-- Alerts and Warnings -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">Alerts</h2>
+            <div id="alerts-list" class="space-y-4">
+                <!-- Alerts will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to update dashboard data
+        async function updateDashboard() {
+            // Fetch topology data
+            const topology = await fetch('/api/topology').then(res => res.json());
+            
+            // Fetch metrics
+            const metrics = await fetch('/api/metrics').then(res => res.json());
+            
+            // Fetch alerts
+            const alerts = await fetch('/api/alerts').then(res => res.json());
+            
+            // Update topology visualization
+            updateTopologyViz(topology);
+            
+            // Update layer statistics
+            updateLayerStats(metrics.layer_stats);
+            
+            // Update alerts
+            updateAlerts(alerts);
+            
+            // Update summary metrics
+            document.getElementById('total-switches').textContent = 
+                Object.keys(metrics.switches).length;
+            document.getElementById('active-links').textContent = 
+                Object.values(metrics.links).filter(l => l.status === 'active').length;
+            document.getElementById('alert-count').textContent = alerts.length;
+        }
+
+        // Function to update topology visualization using D3.js
+        function updateTopologyViz(topology) {
+            // D3.js force-directed graph implementation
+            // ... (implementation details)
+        }
+
+        // Function to update layer statistics
+        function updateLayerStats(layerStats) {
+            // Update statistics for each layer
+            // ... (implementation details)
+        }
+
+        // Function to update alerts list
+        function updateAlerts(alerts) {
+            const alertsList = document.getElementById('alerts-list');
+            alertsList.innerHTML = alerts
+                .map(alert => `
+                    <div class="p-4 ${alert.level === 'critical' ? 'bg-red-100' : 'bg-yellow-100'} rounded">
+                        <p class="font-semibold">${alert.message}</p>
+                        <p class="text-sm text-gray-600">${new Date(alert.timestamp).toLocaleString()}</p>
+                    </div>
+                `)
+                .join('');
+        }
+
+        // Update dashboard every 5 seconds
+        setInterval(updateDashboard, 5000);
+        
+        // Initial update
+        updateDashboard();
+    </script>
+</body>
+</html>
